@@ -6,7 +6,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{72CAC624-5A69-4472-BE0E-3419823C97EE}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <StartupObject>ATMConsole.CardHolder</StartupObject>
+    <StartupObject>ATMConsole.Program</StartupObject>
     <RootNamespace>ATMConsole</RootNamespace>
     <AssemblyName>ATMConsole</AssemblyName>
     <FileAlignment>512</FileAlignment>
@@ -69,7 +69,7 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CardHolder.vb" />
+    <Compile Include="Program.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
