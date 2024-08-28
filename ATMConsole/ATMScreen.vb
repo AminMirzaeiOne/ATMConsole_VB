@@ -30,7 +30,6 @@ Public Class ATMScreen
     Public Shared Function ThirdPartyTransferForm() As VMThirdPartyTransfer
         Dim vMThirdPartyTransfer = New VMThirdPartyTransfer()
 
-        ''' Console.Write("\nRecipient's account number: ");
         'vMThirdPartyTransfer.RecipientBankAccountNumber = Convert.ToInt64(Console.ReadLine()); // no validation here yet.
         vMThirdPartyTransfer.RecipientBankAccountNumber = Utility.GetValidIntInputAmt("recipient's account number")
 
