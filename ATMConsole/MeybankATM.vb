@@ -175,7 +175,7 @@
     End Sub
 
     Public Sub CheckBalance(bankAccount As BankAccount) Implements IBalance.CheckBalance
-        Throw New NotImplementedException()
+        Utility.PrintMessage($"Your bank account balance amount is: {Utility.FormatAmount(bankAccount.Balance)}", True)
     End Sub
 
     Public Sub PlaceDeposit(bankAccount As BankAccount) Implements IDeposit.PlaceDeposit
