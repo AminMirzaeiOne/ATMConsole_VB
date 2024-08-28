@@ -1,5 +1,6 @@
 ﻿Imports System.Globalization
 Imports System.Text
+Imports System.Threading
 
 Public Class Utility
     Private Shared culture As CultureInfo = New CultureInfo("ms-MY")
@@ -53,6 +54,31 @@ Public Class Utility
         Return input.ToString()
     End Function
 
+
+    Public Shared Sub printDotAnimation(Optional timer As Integer = 10)
+        For x = 0 To timer - 1
+            System.Console.Write(".")
+            Thread.Sleep(100)
+        Next
+        Console.WriteLine()
+    End Sub
+
+    Public Shared Function FormatAmount(amt As Decimal) As String
+        Return String.Format(culture, "{0:C2}", amt)
+    End Function
+
+    Public Shared Sub PrintMessage(msg As String, success As Boolean)
+        If success Then
+            Console.ForegroundColor = ConsoleColor.Yellow
+        Else
+            Console.ForegroundColor = ConsoleColor.Red
+        End If
+
+        Console.WriteLine(msg)
+        Console.ResetColor()
+        Console.WriteLine("Press any key to continue")
+        Console.ReadKey()
+    End Sub
 
 
 
