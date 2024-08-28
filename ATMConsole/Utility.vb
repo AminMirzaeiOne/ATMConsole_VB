@@ -43,12 +43,12 @@ Public Class Utility
     Public Shared Function GetHiddenConsoleInput() As String
         Dim input As StringBuilder = New StringBuilder()
         While True
-            Dim key = Console.ReadKey(True)
-            If key.Key Is ConsoleKey.Enter Then Exit While
-            If key.Key Is ConsoleKey.Backspace AndAlso input.Length > 0 Then
+            Dim keyd = Console.ReadKey(True)
+            If keyd.Key = ConsoleKey.Enter Then Exit While
+            If keyd.Key = ConsoleKey.Backspace AndAlso input.Length > 0 Then
                 input.Remove(input.Length - 1, 1)
-            ElseIf key.Key IsNot ConsoleKey.Backspace Then
-                input.Append(key.KeyChar)
+            ElseIf keyd.Key <> ConsoleKey.Backspace Then
+                input.Append(keyd.KeyChar)
             End If
         End While
         Return input.ToString()
