@@ -1,4 +1,6 @@
-﻿Public Class MeybankATM
+﻿Imports System.Security.Principal
+
+Public Class MeybankATM
     Implements ILogin, IBalance, IDeposit, IWithdrawal, IThirdPartyTransfer, ITransaction
 
     Private Shared tries As Integer
@@ -179,6 +181,37 @@
     End Sub
 
     Public Sub PlaceDeposit(bankAccount As BankAccount) Implements IDeposit.PlaceDeposit
-        Throw New NotImplementedException()
+        Console.WriteLine(vbLf & "Note: Actual ATM system will just let you ")
+        Console.Write("place bank notes into ATM machine. " & vbLf & vbLf)
+        'Console.Write("Enter amount: " + ATMScreen.cur);
+        transaction_amt = Utility.GetValidDecimalInputAmt("amount")
+
+        System.Console.Write(vbLf & "Check and counting bank notes.")
+        Utility.printDotAnimation()
+
+        If transaction_amt <= 0 Then
+            Utility.PrintMessage("Amount needs to be more than zero. Try again.", False)
+        ElseIf transaction_amt Mod 10 <> 0 Then
+            Utility.PrintMessage($"Key in the deposit amount only with multiply of 10. Try again.", False)
+        ElseIf Not PreviewBankNotesCount(transaction_amt) Then
+            Utility.PrintMessage($"You have cancelled your action.", False)
+        Else
+            ' Bind transaction_amt to Transaction object
+            ' Add transaction record - Start
+            Dim transaction = New Transaction() With {
+        .BankAccountNoFrom = account.AccountNumber,
+        .BankAccountNoTo = account.AccountNumber,
+        .TransactionType = TransactionType.Deposit,
+        .TransactionAmount = transaction_amt,
+.TransactionDate = Date.Now
+}
+            InsertTransaction(account, transaction)
+            ' Add transaction record - End
+
+            ' Another method to update account balance.
+            account.Balance = account.Balance + transaction_amt
+
+            Utility.PrintMessage($"You have successfully deposited {Utility.FormatAmount(transaction_amt)}", True)
+        End If
     End Sub
 End Class
