@@ -77,6 +77,7 @@
     <Compile Include="IThirdPartyTransfer.vb" />
     <Compile Include="ITransaction.vb" />
     <Compile Include="IWithdrawal.vb" />
+    <Compile Include="MeybankATM.vb" />
     <Compile Include="Program.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
