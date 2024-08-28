@@ -133,7 +133,7 @@ Public Class MeybankATM
 
 
     Public Sub InsertTransaction(bankAccount As BankAccount, transaction As Transaction) Implements ITransaction.InsertTransaction
-        Throw New NotImplementedException()
+        _listOfTransactions.Add(transaction)
     End Sub
 
     Public Sub ViewTransaction(bankAccount As BankAccount) Implements ITransaction.ViewTransaction
