@@ -44,5 +44,16 @@ Public Class ATMScreen
         Return vMThirdPartyTransfer
     End Function
 
+    Public Shared Sub ShowMenu1()
+        Console.Clear()
+        Console.WriteLine(" ------------------------")
+        Console.WriteLine("| Meybank ATM Main Menu  |")
+        Console.WriteLine("|                        |")
+        Console.WriteLine("| 1. Insert ATM card     |")
+        Console.WriteLine("| 2. Exit                |")
+        Console.WriteLine("|                        |")
+        Console.WriteLine(" ------------------------")
+    End Sub
+
 
 End Class
