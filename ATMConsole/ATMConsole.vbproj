@@ -96,6 +96,7 @@
     </Compile>
     <Compile Include="Transaction.vb" />
     <Compile Include="Utility.vb" />
+    <Compile Include="VMThirdPartyTransfer.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="My Project\Resources.resx">
