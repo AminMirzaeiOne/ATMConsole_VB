@@ -122,7 +122,40 @@ Public Class MeybankATM
     End Sub
 
     Public Sub MakeWithdrawal(bankAccount As BankAccount) Implements IWithdrawal.MakeWithdrawal
-        Throw New NotImplementedException()
+        Console.WriteLine(vbLf & "Note: For GUI or actual ATM system, user can ")
+        Console.Write("choose some default withdrawal amount or custom amount. " & vbLf & vbLf)
+
+        ' Console.Write("Enter amount: " + ATMScreen.cur);
+        ' transaction_amt = ATMScreen.ValidateInputAmount(Console.ReadLine());
+
+        transaction_amt = Utility.GetValidDecimalInputAmt("amount")
+
+        If transaction_amt <= 0 Then
+            Utility.PrintMessage("Amount needs to be more than zero. Try again.", False)
+        ElseIf transaction_amt > account.Balance Then
+            Utility.PrintMessage($"Withdrawal failed. You do not have enough fund to withdraw {Utility.FormatAmount(transaction_amt)}", False)
+        ElseIf account.Balance - transaction_amt < minimum_kept_amt Then
+            Utility.PrintMessage($"Withdrawal failed. Your account needs to have minimum {Utility.FormatAmount(minimum_kept_amt)}", False)
+        ElseIf transaction_amt Mod 10 <> 0 Then
+            Utility.PrintMessage($"Key in the deposit amount only with multiply of 10. Try again.", False)
+        Else
+            ' Bind transaction_amt to Transaction object
+            ' Add transaction record - Start
+            Dim transaction = New Transaction() With {
+        .BankAccountNoFrom = account.AccountNumber,
+        .BankAccountNoTo = account.AccountNumber,
+        .TransactionType = TransactionType.Withdrawal,
+        .TransactionAmount = transaction_amt,
+        .TransactionDate = Date.Now
+    }
+            InsertTransaction(account, transaction)
+            ' Add transaction record - End
+
+            ' Another method to update account balance.
+            account.Balance = account.Balance - transaction_amt
+
+            Utility.PrintMessage($"Please collect your money. You have successfully withdraw {Utility.FormatAmount(transaction_amt)}", True)
+        End If
     End Sub
 
     Public Sub CheckCardNoPassword() Implements ILogin.CheckCardNoPassword
