@@ -128,6 +128,23 @@ Public Class MeybankATM
         Return If(opt.Equals("1"), True, False)
     End Function
 
+    Public Sub ViewTransaction(bankAccount As BankAccount)
+
+        If _listOfTransactions.Count <= 0 Then
+            Utility.PrintMessage($"There is no transaction yet.", True)
+        Else
+            Dim table = New ConsoleTable("Type", "From", "To", "Amount " & ATMScreen.cur.ToString(), "Transaction Date")
+
+            For Each tran In _listOfTransactions
+                table.AddRow(tran.TransactionType, tran.BankAccountNoFrom, tran.BankAccountNoTo, tran.TransactionAmount, tran.TransactionDate)
+            Next
+            table.Options.EnableCount = False
+            table.Write()
+            Utility.PrintMessage($"You have performed {_listOfTransactions.Count} transactions.", True)
+        End If
+    End Sub
+
+
 
 
     Public Sub InsertTransaction(bankAccount As BankAccount, transaction As Transaction) Implements ITransaction.InsertTransaction
