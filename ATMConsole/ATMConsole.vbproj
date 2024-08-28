@@ -71,6 +71,7 @@
   <ItemGroup>
     <Compile Include="ATMScreen.vb" />
     <Compile Include="BankAccount.vb" />
+    <Compile Include="IBalance.vb" />
     <Compile Include="Program.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">

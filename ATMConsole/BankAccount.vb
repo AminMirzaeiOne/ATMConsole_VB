@@ -4,6 +4,5 @@
     Public Property CardNumber As Long
     Public Property PinCode As Long
     Public Property Balance As Decimal
-
     Public Property isLocked As Boolean
 End Class
