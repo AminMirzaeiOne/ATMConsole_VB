@@ -13,6 +13,8 @@
     Private Shared selectedAccount As BankAccount
     Private Shared inputAccount As BankAccount
 
+
+
     Public Sub Initialization()
         transaction_amt = 0
 
@@ -122,7 +124,54 @@
     End Sub
 
     Public Sub CheckCardNoPassword() Implements ILogin.CheckCardNoPassword
-        Throw New NotImplementedException()
+        Dim pass = False
+
+        While Not pass
+            inputAccount = New BankAccount()
+
+            Console.WriteLine(vbLf & "Note: Actual ATM system will accept user's ATM card to validate")
+            Console.Write("and read card number, bank account number and bank account status. " & vbLf & vbLf)
+            'Console.Write("Enter ATM Card Number: ");
+            'inputAccount.CardNumber = Convert.ToInt32(Console.ReadLine());
+            inputAccount.CardNumber = Utility.GetValidIntInputAmt("ATM Card Number")
+
+            Console.Write("Enter 6 Digit PIN: ")
+            inputAccount.PinCode = Convert.ToInt32(Utility.GetHiddenConsoleInput())
+            ' for brevity, length 6 is not validated and data type.
+
+
+            System.Console.Write(vbLf & "Checking card number and password.")
+            Utility.printDotAnimation()
+
+            For Each account As BankAccount In _accountList
+                If inputAccount.CardNumber.Equals(account.CardNumber) Then
+                    selectedAccount = account
+
+                    If inputAccount.PinCode.Equals(account.PinCode) Then
+                        If selectedAccount.isLocked Then
+                            LockAccount()
+                        Else
+                            pass = True
+                        End If
+                    Else
+
+                        pass = False
+                        tries += 1
+
+                        If tries >= maxTries Then
+                            selectedAccount.isLocked = True
+
+                            LockAccount()
+                        End If
+
+                    End If
+                End If
+            Next
+
+            If Not pass Then Utility.PrintMessage("Invalid Card number or PIN.", False)
+
+            Console.Clear()
+        End While
     End Sub
 
     Public Sub CheckBalance(bankAccount As BankAccount) Implements IBalance.CheckBalance
