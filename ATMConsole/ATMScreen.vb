@@ -25,5 +25,24 @@ End Enum
 
 
 Public Class ATMScreen
+    Friend Shared cur As String = "RM "
+
+    Public Shared Function ThirdPartyTransferForm() As VMThirdPartyTransfer
+        Dim vMThirdPartyTransfer = New VMThirdPartyTransfer()
+
+        ''' Console.Write("\nRecipient's account number: ");
+        'vMThirdPartyTransfer.RecipientBankAccountNumber = Convert.ToInt64(Console.ReadLine()); // no validation here yet.
+        vMThirdPartyTransfer.RecipientBankAccountNumber = Utility.GetValidIntInputAmt("recipient's account number")
+
+        'Console.Write($"\nTransfer amount: {cur}");
+        vMThirdPartyTransfer.TransferAmount = Utility.GetValidDecimalInputAmt("amount")
+
+        'Console.Write("\nRecipient's account name: ");
+        vMThirdPartyTransfer.RecipientBankAccountName = Utility.GetRawInput("recipient's account name")
+        ' no validation here yet.
+
+        Return vMThirdPartyTransfer
+    End Function
+
 
 End Class
