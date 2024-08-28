@@ -13,6 +13,56 @@
     Private Shared selectedAccount As BankAccount
     Private Shared inputAccount As BankAccount
 
+    Public Sub Execute()
+        'Initialization();
+        ATMScreen.ShowMenu1()
+
+        While True
+            Select Case Utility.GetValidIntInputAmt("your option")
+                Case 1
+                    CheckCardNoPassword()
+
+                    _listOfTransactions = New List(Of Transaction)()
+
+                    While True
+                        ATMScreen.ShowMenu2()
+
+                        Select Case Utility.GetValidIntInputAmt("your option")
+                            Case CInt(SecureMenu.CheckBalance)
+                                CheckBalance(selectedAccount)
+                            Case CInt(SecureMenu.PlaceDeposit)
+                                PlaceDeposit(selectedAccount)
+                            Case CInt(SecureMenu.MakeWithdrawal)
+                                MakeWithdrawal(selectedAccount)
+                            Case CInt(SecureMenu.ThirdPartyTransfer)
+                                Dim vMThirdPartyTransfer = New VMThirdPartyTransfer()
+                                vMThirdPartyTransfer = ATMScreen.ThirdPartyTransferForm()
+
+                                PerformThirdPartyTransfer(selectedAccount, vMThirdPartyTransfer)
+                            Case CInt(SecureMenu.ViewTransaction)
+                                ViewTransaction(selectedAccount)
+
+                            Case CInt(SecureMenu.Logout)
+                                Utility.PrintMessage("You have succesfully logout. Please collect your ATM card..", True)
+
+                                Execute()
+                            Case Else
+                                Utility.PrintMessage("Invalid Option Entered.", False)
+                        End Select
+                    End While
+
+                Case 2
+                    Console.Write(vbLf & "Thank you for using Meybank. Exiting program now .")
+                    Utility.printDotAnimation(15)
+
+                    Environment.Exit(1)
+                Case Else
+                    Utility.PrintMessage("Invalid Option Entered.", False)
+            End Select
+        End While
+    End Sub
+
+
     Public Sub InsertTransaction(bankAccount As BankAccount, transaction As Transaction) Implements ITransaction.InsertTransaction
         Throw New NotImplementedException()
     End Sub
