@@ -128,8 +128,15 @@ Public Class MeybankATM
         Return If(opt.Equals("1"), True, False)
     End Function
 
-    Public Sub ViewTransaction(bankAccount As BankAccount)
 
+
+
+
+    Public Sub InsertTransaction(bankAccount As BankAccount, transaction As Transaction) Implements ITransaction.InsertTransaction
+        Throw New NotImplementedException()
+    End Sub
+
+    Public Sub ViewTransaction(bankAccount As BankAccount) Implements ITransaction.ViewTransaction
         If _listOfTransactions.Count <= 0 Then
             Utility.PrintMessage($"There is no transaction yet.", True)
         Else
@@ -142,17 +149,6 @@ Public Class MeybankATM
             table.Write()
             Utility.PrintMessage($"You have performed {_listOfTransactions.Count} transactions.", True)
         End If
-    End Sub
-
-
-
-
-    Public Sub InsertTransaction(bankAccount As BankAccount, transaction As Transaction) Implements ITransaction.InsertTransaction
-        Throw New NotImplementedException()
-    End Sub
-
-    Public Sub ViewTransaction(bankAccount As BankAccount) Implements ITransaction.ViewTransaction
-        Throw New NotImplementedException()
     End Sub
 
     Public Sub PerformThirdPartyTransfer(bankAccount As BankAccount, vmThirdPartyTransfer As VMThirdPartyTransfer) Implements IThirdPartyTransfer.PerformThirdPartyTransfer
