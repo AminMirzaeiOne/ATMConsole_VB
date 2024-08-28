@@ -1,4 +1,5 @@
 ﻿Imports System.Globalization
+Imports System.Text
 
 Public Class Utility
     Private Shared culture As CultureInfo = New CultureInfo("ms-MY")
@@ -37,6 +38,21 @@ Public Class Utility
         Console.Write($"Enter {message}: ")
         Return Console.ReadLine()
     End Function
+
+    Public Shared Function GetHiddenConsoleInput() As String
+        Dim input As StringBuilder = New StringBuilder()
+        While True
+            Dim key = Console.ReadKey(True)
+            If key.Key Is ConsoleKey.Enter Then Exit While
+            If key.Key Is ConsoleKey.Backspace AndAlso input.Length > 0 Then
+                input.Remove(input.Length - 1, 1)
+            ElseIf key.Key IsNot ConsoleKey.Backspace Then
+                input.Append(key.KeyChar)
+            End If
+        End While
+        Return input.ToString()
+    End Function
+
 
 
 
