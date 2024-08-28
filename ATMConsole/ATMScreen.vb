@@ -4,22 +4,22 @@ Imports System.ComponentModel
 Public Enum SecureMenu
     ' Value 1 is needed because menu starts with 1 while enum starts with 0 if no value given.
 
-    <Description("Check balance")>
+    <System.ComponentModel.Description("Check balance")>
     CheckBalance = 1
 
-    <Description("Place Deposit")>
+    <System.ComponentModel.Description("Place Deposit")>
     PlaceDeposit = 2
 
-    <Description("Make Withdrawal")>
+    <System.ComponentModel.Description("Make Withdrawal")>
     MakeWithdrawal = 3
 
-    <Description("Third Party Transfer")>
+    <System.ComponentModel.Description("Third Party Transfer")>
     ThirdPartyTransfer = 4
 
-    <Description("Transaction")>
+    <System.ComponentModel.Description("Transaction")>
     ViewTransaction = 5
 
-    <Description("Logout")>
+    <System.ComponentModel.Description("Logout")>
     Logout = 6
 End Enum
 
