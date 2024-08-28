@@ -13,6 +13,38 @@
     Private Shared selectedAccount As BankAccount
     Private Shared inputAccount As BankAccount
 
+    Public Sub Initialization()
+        transaction_amt = 0
+
+        _accountList = New List(Of BankAccount) From {
+    New BankAccount() With {
+            .FullName = "John",
+            .AccountNumber = 333111,
+            .CardNumber = 123,
+            .PinCode = 111111,
+            .Balance = 2000D,
+            .isLocked = False
+        },
+    New BankAccount() With {
+            .FullName = "Mike",
+            .AccountNumber = 111222,
+            .CardNumber = 456,
+            .PinCode = 222222,
+            .Balance = 1500.3D,
+            .isLocked = True
+        },
+    New BankAccount() With {
+            .FullName = "Mary",
+            .AccountNumber = 888555,
+            .CardNumber = 789,
+            .PinCode = 333333,
+            .Balance = 2900.12D,
+            .isLocked = False
+        }
+}
+    End Sub
+
+
     Private Shared Sub LockAccount()
         Console.Clear()
         Utility.PrintMessage("Your account is locked.", True)
