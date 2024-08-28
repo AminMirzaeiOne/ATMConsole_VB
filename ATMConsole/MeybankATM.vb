@@ -1,6 +1,18 @@
 ﻿Public Class MeybankATM
     Implements ILogin, IBalance, IDeposit, IWithdrawal, IThirdPartyTransfer, ITransaction
 
+    Private Shared tries As Integer
+    Private Const maxTries As Integer = 3
+    Private Const minimum_kept_amt As Decimal = 20
+
+    'todo: A transaction class with transaction amount can replace these two variable.
+    Private Shared transaction_amt As Decimal
+
+    Private Shared _accountList As List(Of BankAccount)
+    Private Shared _listOfTransactions As List(Of Transaction)
+    Private Shared selectedAccount As BankAccount
+    Private Shared inputAccount As BankAccount
+
     Public Sub InsertTransaction(bankAccount As BankAccount, transaction As Transaction) Implements ITransaction.InsertTransaction
         Throw New NotImplementedException()
     End Sub
