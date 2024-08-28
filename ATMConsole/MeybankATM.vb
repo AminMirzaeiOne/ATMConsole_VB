@@ -118,7 +118,43 @@ Public Class MeybankATM
     End Sub
 
     Public Sub PerformThirdPartyTransfer(bankAccount As BankAccount, vmThirdPartyTransfer As VMThirdPartyTransfer) Implements IThirdPartyTransfer.PerformThirdPartyTransfer
-        Throw New NotImplementedException()
+        If vmThirdPartyTransfer.TransferAmount <= 0 Then
+            Utility.PrintMessage("Amount needs to be more than zero. Try again.", False)
+        ElseIf vmThirdPartyTransfer.TransferAmount > bankAccount.Balance Then
+            ' Check giver's account balance - Start
+            Utility.PrintMessage($"Withdrawal failed. You do not have enough fund to withdraw {Utility.FormatAmount(transaction_amt)}", False)
+        ElseIf bankAccount.Balance - vmThirdPartyTransfer.TransferAmount < 20 Then
+            ' Check giver's account balance - End
+            Utility.PrintMessage($"Withdrawal failed. Your account needs to have minimum {Utility.FormatAmount(minimum_kept_amt)}", False)
+        Else
+            ' Check if receiver's bank account number is valid.
+            Dim selectedBankAccountReceiver = (From b In _accountList Where b.AccountNumber Is vmThirdPartyTransfer.RecipientBankAccountNumber Select b).FirstOrDefault()
+
+            If selectedBankAccountReceiver Is Nothing Then
+                Utility.PrintMessage($"Third party transfer failed. Receiver bank account number is invalid.", False)
+            ElseIf selectedBankAccountReceiver.FullName IsNot vmThirdPartyTransfer.RecipientBankAccountName Then
+                Utility.PrintMessage($"Third party transfer failed. Recipient's account name does not match.", False)
+            Else
+                ' Bind transaction_amt to Transaction object
+                ' Add transaction record - Start
+                Dim transaction As Transaction = New Transaction() With {
+    .BankAccountNoFrom = bankAccount.AccountNumber,
+    .BankAccountNoTo = vmThirdPartyTransfer.RecipientBankAccountNumber,
+    .TransactionType = TransactionType.ThirdPartyTransfer,
+    .TransactionAmount = vmThirdPartyTransfer.TransferAmount,
+    .TransactionDate = Date.Now
+}
+                _listOfTransactions.Add(transaction)
+                Utility.PrintMessage($"You have successfully transferred out {Utility.FormatAmount(vmThirdPartyTransfer.TransferAmount)} to {vmThirdPartyTransfer.RecipientBankAccountName}", True)
+                ' Add transaction record - End
+
+                ' Update balance amount (Giver)
+                bankAccount.Balance = bankAccount.Balance - vmThirdPartyTransfer.TransferAmount
+
+                ' Update balance amount (Receiver)
+                selectedBankAccountReceiver.Balance = selectedBankAccountReceiver.Balance + vmThirdPartyTransfer.TransferAmount
+            End If
+        End If
     End Sub
 
     Public Sub MakeWithdrawal(bankAccount As BankAccount) Implements IWithdrawal.MakeWithdrawal
