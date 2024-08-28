@@ -13,6 +13,16 @@
     Private Shared selectedAccount As BankAccount
     Private Shared inputAccount As BankAccount
 
+    Private Shared Sub LockAccount()
+        Console.Clear()
+        Utility.PrintMessage("Your account is locked.", True)
+        Console.WriteLine("Please go to the nearest branch to unlocked your account.")
+        Console.WriteLine("Thank you for using Meybank. ")
+        Console.ReadKey()
+        Environment.Exit(1)
+    End Sub
+
+
     Public Sub Execute()
         'Initialization();
         ATMScreen.ShowMenu1()
