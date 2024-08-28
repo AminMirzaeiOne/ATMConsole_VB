@@ -73,6 +73,7 @@
     <Compile Include="BankAccount.vb" />
     <Compile Include="IBalance.vb" />
     <Compile Include="IDeposit.vb" />
+    <Compile Include="ILogin.vb" />
     <Compile Include="Program.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
