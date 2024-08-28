@@ -108,6 +108,27 @@ Public Class MeybankATM
         End While
     End Sub
 
+    Private Shared Function PreviewBankNotesCount(amount As Decimal) As Boolean
+        Dim hundredNotesCount As Integer = CInt(amount) / 100
+        Dim fiftyNotesCount As Integer = (CInt(amount) Mod 100) / 50
+        Dim tenNotesCount As Integer = (CInt(amount) Mod 50) / 10
+
+        Console.WriteLine(vbLf & "Summary")
+        Console.WriteLine("-------")
+        Console.WriteLine($"{ATMScreen.cur} 100 x {hundredNotesCount} = {100 * hundredNotesCount}")
+        Console.WriteLine($"{ATMScreen.cur} 50 x {fiftyNotesCount} = {50 * fiftyNotesCount}")
+        Console.WriteLine($"{ATMScreen.cur} 10 x {tenNotesCount} = {10 * tenNotesCount}")
+        Console.Write($"Total amount: {Utility.FormatAmount(amount)}
+
+")
+
+        'Console.Write("\n\nPress 1 to confirm or 0 to cancel: ");
+        Dim opt As String = Utility.GetValidIntInputAmt("1 to confirm or 0 to cancel").ToString()
+
+        Return If(opt.Equals("1"), True, False)
+    End Function
+
+
 
     Public Sub InsertTransaction(bankAccount As BankAccount, transaction As Transaction) Implements ITransaction.InsertTransaction
         Throw New NotImplementedException()
