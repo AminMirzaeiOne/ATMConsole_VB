@@ -33,6 +33,14 @@ Public Class Utility
         Return amount
     End Function
 
+    Public Shared Function GetRawInput(message As String) As String
+        Console.Write($"Enter {message}: ")
+        Return Console.ReadLine()
+    End Function
+
+
+
+
 
 
 End Class
