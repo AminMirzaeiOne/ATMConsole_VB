@@ -55,7 +55,7 @@ Public Class Utility
     End Function
 
 
-    Public Shared Sub printDotAnimation(Optional timer As Integer = 10)
+    Public Shared Sub PrintDotAnimation(Optional timer As Integer = 10)
         For x = 0 To timer - 1
             System.Console.Write(".")
             Thread.Sleep(100)
