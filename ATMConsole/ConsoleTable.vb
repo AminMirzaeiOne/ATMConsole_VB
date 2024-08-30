@@ -7,16 +7,12 @@ Public Class ConsoleTable
     Public ReadOnly Property Columns As IList(Of Object)
     Public ReadOnly Property Rows As IList(Of Object())
 
-    Private _ColumnTypes As System.Type(), _Formats As System.Collections.Generic.IList(Of String)
     Public ReadOnly Property Options As ConsoleTableOptions
 
+    Public Property Formats As IList(Of String)
+
     Public Property ColumnTypes As Type()
-        Get
-            Return _ColumnTypes
-        End Get
-        Private Set(value As Type())
-            _ColumnTypes = value
-        End Set
+
 
     Public Shared ReadOnly NumericTypes As HashSet(Of Type) = New HashSet(Of Type) From {
     GetType(Integer),
@@ -131,7 +127,7 @@ Public Class ConsoleTable
         Dim builder = New StringBuilder()
 
         ' find the longest column by searching each row
-        Dim columnLengths = columnLengths()
+        Dim columnLengths = ColumnLengthsOp()
 
         ' set right alinment if is a number
         Dim columnAlignment = Enumerable.Range(CInt(0), Columns.Count).[Select](GetNumberAlignment).ToList()
@@ -139,7 +135,7 @@ Public Class ConsoleTable
         ' create the string format with padding ; just use for maxRowLength
         Dim format = Enumerable.Range(0, Columns.Count).[Select](Function(i) " | {" & i.ToString() & "," & columnAlignment(i).ToString() & columnLengths(i).ToString().ToString() & "}").Aggregate(Function(s, a) s + a).ToString() & " |"
 
-        SetFormats(columnLengths(), columnAlignment)
+        SetFormats(ColumnLengthsOp(), columnAlignment)
 
         ' find the longest formatted line
         Dim maxRowLength = Math.Max(0, If(Rows.Any(), Rows.Max(Function(row) String.Format(format, row).Length), 0))
@@ -195,7 +191,7 @@ Public Class ConsoleTable
         Dim builder = New StringBuilder()
 
         ' find the longest column by searching each row
-        Dim columnLengths = columnLengths()
+        Dim columnLengths = ColumnLengthsOp()
 
         ' create the string format with padding
         __ = Format(columnLengths, delimiter)
@@ -259,26 +255,26 @@ Public Class ConsoleTable
     End Function
 
     Private Function GetNumberAlignment(i As Integer) As String
-        Return If(Options.NumberAlignment Is Alignment.Right AndAlso ColumnTypes IsNot Nothing AndAlso NumericTypes.Contains(ColumnTypes(i)), "", "-")
+        Return If(Options.NumberAlignment = Alignment.Right AndAlso ColumnTypes IsNot Nothing AndAlso NumericTypes.Contains(ColumnTypes(i)), "", "-")
     End Function
 
-    Private Function ColumnLengths() As List(Of Integer)
+    Private Function ColumnLengthsOp() As List(Of Integer)
         Dim lColumnLengths = Columns.[Select](Function(t, i) Rows.[Select](Function(x) x(i)).Union({Columns(i)}).Where(Function(x) x IsNot Nothing).[Select](Function(x) x.ToString().ToCharArray().Sum(Function(c) CInt(If(c > 127, 2, 1)))).Max()).ToList()
         Return lColumnLengths
     End Function
 
 
-    Public Sub Write(Optional format As Format = ConsoleTables.Format.Default)
+    Public Sub Write(Optional format As Format = FormatOptions.Defaultd)
         SetFormats(ColumnLengths(), Enumerable.Range(CInt(0), Columns.Count).[Select](GetNumberAlignment).ToList())
 
         Select Case format
-            Case ConsoleTables.Format.[Default]
+            Case FormatOptions.Defaultd
                 Options.OutputTo.WriteLine(MyBase.ToString())
-            Case ConsoleTables.Format.MarkDown
+            Case FormatOptions.MarkDown
                 Options.OutputTo.WriteLine(ToMarkDownString())
-            Case ConsoleTables.Format.Alternative
+            Case FormatOptions.Alternative
                 Options.OutputTo.WriteLine(ToStringAlternative())
-            Case ConsoleTables.Format.Minimal
+            Case FormatOptions.Minimal
                 Options.OutputTo.WriteLine(ToMinimalString())
             Case Else
                 Throw New ArgumentOutOfRangeException(NameOf(format), format, Nothing)
@@ -318,7 +314,7 @@ Public Class ConsoleTableOptions
     Public Property OutputTo As TextWriter = Console.Out
 End Class
 
-Public Enum Format
+Public Enum FormatOptions
     Defaultd = 0
     MarkDown = 1
     Alternative = 2
