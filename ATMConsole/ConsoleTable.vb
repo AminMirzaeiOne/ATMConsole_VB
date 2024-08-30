@@ -33,6 +33,30 @@
             })
     End Sub
 
+    Public Sub New(options As ConsoleTableOptions)
+        options = If(options, CSharpImpl.__Throw(Of Object)(New ArgumentNullException("options")))
+        Rows = New List(Of Object())()
+        Columns = New List(Of Object)(options.Columns)
+    End Sub
+
+    Public Function AddColumn(names As IEnumerable(Of String)) As ConsoleTable
+        For Each name In names
+            Columns.Add(name)
+        Next
+        Return Me
+    End Function
+
+    Public Function AddRow(ParamArray values As Object()) As ConsoleTable
+        If values Is Nothing Then Throw New ArgumentNullException(NameOf(values))
+
+        If Not Columns.Any() Then Throw New Exception("Please set the columns first")
+
+        If Columns.Count <> values.Length Then Throw New Exception($"The number columns in the row ({Columns.Count}) does not match the values ({values.Length})")
+
+        Rows.Add(values)
+        Return Me
+    End Function
+
 
 
 End Class
