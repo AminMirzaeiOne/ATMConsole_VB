@@ -172,11 +172,19 @@ Public Class ConsoleTable
     End Function
 
     Private Sub SetFormats(columnLengths As List(Of Integer), columnAlignment As List(Of String))
-        Dim allLines = New List(Of Object())()
+        Dim allLines As New List(Of Object())
         allLines.Add(Columns.ToArray())
         allLines.AddRange(Rows)
-        Formats = allLines.[Select](Function(d) Enumerable.Range(CInt(0), Columns.Count).Select(Function(i)                                                                                       Return " | {" & i.ToString() & "," & columnAlignment(CInt(i)) & length.ToString().ToString() & "}"
-                                                                                                  End Function).Aggregate(Function(s, a) s + a).ToString() & " |").ToList()
+
+        Formats = allLines.Select(Function(d)
+                                      Return Enumerable.Range(0, Columns.Count) _
+            .Select(Function(i)
+                        Dim value As String = If(d(i)?.ToString(), "")
+                        Dim length As Integer = columnLengths(i) - (GetTextWidth(value) - value.Length)
+                        Return $" | {{{{0,{columnAlignment(i)}{length}}}}}"
+                    End Function) _
+            .Aggregate(Function(s, a) s & a) & " |"
+                                  End Function).ToList()
     End Sub
 
     Public Shared Function GetTextWidth(value As String) As Integer
