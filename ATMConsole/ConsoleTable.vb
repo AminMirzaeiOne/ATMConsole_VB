@@ -1,4 +1,5 @@
 ﻿Imports System.Text
+Imports Microsoft.SqlServer.Server
 
 Public Class ConsoleTable
     Public ReadOnly Property Columns As IList(Of Object)
@@ -169,6 +170,16 @@ Public Class ConsoleTable
         Return builder.ToString()
     End Function
 
+    Private Sub SetFormats(columnLengths As List(Of Integer), columnAlignment As List(Of String))
+        Dim allLines = New List(Of Object())()
+        allLines.Add(Columns.ToArray())
+        allLines.AddRange(Rows)
+        Formats = allLines.[Select](Function(d) Enumerable.Range(CInt(0), Columns.Count).[Select](Function(i)
+                                                                                                      Dim value = If(d(CInt(i))?.ToString(), "")
+                                                                                                      Dim length = columnLengths(CInt(i)) - (GetTextWidth(CStr(value)) - value.Length)
+                                                                                                      Return " | {" & i.ToString() & "," & columnAlignment(CInt(i)) & length.ToString().ToString() & "}"
+                                                                                                  End Function).Aggregate(Function(s, a) s + a).ToString() & " |").ToList()
+    End Sub
 
 
 End Class
