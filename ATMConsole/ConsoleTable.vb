@@ -216,6 +216,11 @@ Public Class ConsoleTable
     End Function
 
 
+    Public Function ToMinimalString() As String
+        Return ToMarkDownString(Char.MinValue)
+    End Function
+
+
 
 
 End Class
