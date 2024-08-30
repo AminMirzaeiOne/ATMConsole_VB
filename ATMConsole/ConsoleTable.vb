@@ -288,6 +288,9 @@ Public Class ConsoleTable
         Return GetType(T).GetProperties().[Select](Function(x) x.Name).ToArray()
     End Function
 
+    Private Shared Function GetColumnValue(Of T)(target As Object, column As String) As Object
+        Return GetType(T).GetProperty(column)?.GetValue(target, Nothing)
+    End Function
 
 
 End Class
