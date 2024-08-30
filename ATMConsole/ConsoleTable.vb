@@ -246,5 +246,17 @@ Public Class ConsoleTable
     End Function
 
 
+    Private Function Format(columnLengths As List(Of Integer), Optional delimiter As Char = "|"c) As String
+        ' set right alignment if is a number
+        Dim columnAlignment = Enumerable.Range(CInt(0), Columns.Count).[Select](GetNumberAlignment).ToList()
+
+        SetFormats(columnLengths, columnAlignment)
+
+        Dim delimiterStr = If(delimiter = Char.MinValue, String.Empty, delimiter.ToString())
+        Dim lFormat = (Enumerable.Aggregate(Of String)(Enumerable.Select(Of Integer, Global.System.[String])(Enumerable.Range(CInt(0), Columns.Count), CType(Function(i) CStr(" " & delimiterStr & " {" & i.ToString() & "," & columnAlignment(CInt(i)).ToString() & columnLengths(CInt(i)).ToString() & "}"), Func(Of Integer, String))), CType(Function(s, a) CStr(s & a), Func(Of String, String, String))) & " ".ToString() & delimiterStr).Trim()
+        Return lFormat
+    End Function
+
+
 
 End Class
