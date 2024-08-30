@@ -205,7 +205,7 @@ Public Class ConsoleTable
         Dim columnLengths = ColumnLengthsOp()
 
         ' create the string format with padding
-        __ = Format(columnLengths, delimiter)
+        Dim x = Format(columnLengths, delimiter)
 
         ' find the longest formatted line
         Dim columnHeaders = String.Format(Formats(CInt(0)).TrimStart(), Columns.ToArray())
