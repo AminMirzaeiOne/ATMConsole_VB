@@ -257,6 +257,11 @@ Public Class ConsoleTable
         Return lFormat
     End Function
 
+    Private Function GetNumberAlignment(i As Integer) As String
+        Return If(Options.NumberAlignment Is Alignment.Right AndAlso ColumnTypes IsNot Nothing AndAlso NumericTypes.Contains(ColumnTypes(i)), "", "-")
+    End Function
+
+
 
 
 End Class
