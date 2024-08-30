@@ -192,7 +192,7 @@ Public Class MeybankATM
         End If
     End Sub
 
-    Public Sub MakeWithdrawal(bankAccount As BankAccount) Implements IWithdrawal.MakeWithdrawal
+    Public Sub MakeWithdrawal(account As BankAccount) Implements IWithdrawal.MakeWithdrawal
         Console.WriteLine(vbLf & "Note: For GUI or actual ATM system, user can ")
         Console.Write("choose some default withdrawal amount or custom amount. " & vbLf & vbLf)
 
@@ -284,14 +284,14 @@ Public Class MeybankATM
         Utility.PrintMessage($"Your bank account balance amount is: {Utility.FormatAmount(bankAccount.Balance)}", True)
     End Sub
 
-    Public Sub PlaceDeposit(bankAccount As BankAccount) Implements IDeposit.PlaceDeposit
+    Public Sub PlaceDeposit(account As BankAccount) Implements IDeposit.PlaceDeposit
         Console.WriteLine(vbLf & "Note: Actual ATM system will just let you ")
         Console.Write("place bank notes into ATM machine. " & vbLf & vbLf)
         'Console.Write("Enter amount: " + ATMScreen.cur);
         transaction_amt = Utility.GetValidDecimalInputAmt("amount")
 
         System.Console.Write(vbLf & "Check and counting bank notes.")
-        Utility.printDotAnimation()
+        Utility.PrintDotAnimation()
 
         If transaction_amt <= 0 Then
             Utility.PrintMessage("Amount needs to be more than zero. Try again.", False)
