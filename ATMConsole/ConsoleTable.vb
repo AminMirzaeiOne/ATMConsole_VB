@@ -292,5 +292,10 @@ Public Class ConsoleTable
         Return GetType(T).GetProperty(column)?.GetValue(target, Nothing)
     End Function
 
+    Private Shared Function GetColumnsType(Of T)() As IEnumerable(Of Type)
+        Return GetType(T).GetProperties().[Select](Function(x) x.PropertyType).ToArray()
+    End Function
+
+
 
 End Class
