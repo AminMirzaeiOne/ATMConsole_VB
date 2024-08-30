@@ -261,6 +261,10 @@ Public Class ConsoleTable
         Return If(Options.NumberAlignment Is Alignment.Right AndAlso ColumnTypes IsNot Nothing AndAlso NumericTypes.Contains(ColumnTypes(i)), "", "-")
     End Function
 
+    Private Function ColumnLengths() As List(Of Integer)
+        Dim lColumnLengths = Columns.[Select](Function(t, i) Rows.[Select](Function(x) x(i)).Union({Columns(i)}).Where(Function(x) x IsNot Nothing).[Select](Function(x) x.ToString().ToCharArray().Sum(Function(c) CInt(If(c > 127, 2, 1)))).Max()).ToList()
+        Return lColumnLengths
+    End Function
 
 
 
