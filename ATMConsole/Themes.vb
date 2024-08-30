@@ -5,9 +5,12 @@
         If theme = "light" Then
             System.Console.BackgroundColor = ConsoleColor.White
             System.Console.Clear()
+            System.Console.ForegroundColor = ConsoleColor.Black
         ElseIf theme = "dark" Then
             System.Console.BackgroundColor = ConsoleColor.Black
             System.Console.Clear()
+            System.Console.ForegroundColor = ConsoleColor.White
+
         End If
     End Sub
 End Module
