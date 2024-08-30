@@ -1,4 +1,5 @@
 ﻿Imports System.Text
+Imports System.Text.RegularExpressions
 Imports Microsoft.SqlServer.Server
 
 Public Class ConsoleTable
@@ -188,6 +189,32 @@ Public Class ConsoleTable
     Public Function ToMarkDownString() As String
         Return ToMarkDownString("|"c)
     End Function
+
+    Private Function ToMarkDownString(delimiter As Char) As String
+        Dim builder = New StringBuilder()
+
+        ' find the longest column by searching each row
+        Dim columnLengths = columnLengths()
+
+        ' create the string format with padding
+        __ = Format(columnLengths, delimiter)
+
+        ' find the longest formatted line
+        Dim columnHeaders = String.Format(Formats(CInt(0)).TrimStart(), Columns.ToArray())
+
+        ' add each row
+        Dim results = Rows.[Select](Function(row, i) String.Format(Formats(i + 1).TrimStart(), row)).ToList()
+
+        ' create the divider
+        Dim divider = Regex.Replace(columnHeaders, "[^|]", "-")
+
+        builder.AppendLine(columnHeaders)
+        builder.AppendLine(divider)
+        results.ForEach(Sub(row) builder.AppendLine(row))
+
+        Return builder.ToString()
+    End Function
+
 
 
 
