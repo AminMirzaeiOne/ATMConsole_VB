@@ -174,12 +174,21 @@ Public Class ConsoleTable
         Dim allLines = New List(Of Object())()
         allLines.Add(Columns.ToArray())
         allLines.AddRange(Rows)
-        Formats = allLines.[Select](Function(d) Enumerable.Range(CInt(0), Columns.Count).[Select](Function(i)
-                                                                                                      Dim value = If(d(CInt(i))?.ToString(), "")
-                                                                                                      Dim length = columnLengths(CInt(i)) - (GetTextWidth(CStr(value)) - value.Length)
-                                                                                                      Return " | {" & i.ToString() & "," & columnAlignment(CInt(i)) & length.ToString().ToString() & "}"
+        Formats = allLines.[Select](Function(d) Enumerable.Range(CInt(0), Columns.Count).[Select](Function(i)                                                                                       Return " | {" & i.ToString() & "," & columnAlignment(CInt(i)) & length.ToString().ToString() & "}"
                                                                                                   End Function).Aggregate(Function(s, a) s + a).ToString() & " |").ToList()
     End Sub
+
+    Public Shared Function GetTextWidth(value As String) As Integer
+        If Equals(value, Nothing) Then Return 0
+
+        Dim length = value.ToCharArray().Sum(Function(c) If(c > 127, 2, 1))
+        Return length
+    End Function
+
+    Public Function ToMarkDownString() As String
+        Return ToMarkDownString("|"c)
+    End Function
+
 
 
 End Class
