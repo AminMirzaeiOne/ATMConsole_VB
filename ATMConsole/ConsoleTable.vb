@@ -58,5 +58,33 @@
     End Function
 
 
+    Public Function Configure(action As Action(Of ConsoleTableOptions)) As ConsoleTable
+        action(Options)
+        Return Me
+    End Function
+
+
+    Public Shared Function FromDictionary(values As Dictionary(Of String, Dictionary(Of String, Object))) As ConsoleTable
+        Dim table = New ConsoleTable()
+
+        Dim columNames = values.SelectMany(Function(x) x.Value.Keys).Distinct().ToList()
+        columNames.Insert(0, "")
+        table.AddColumn(columNames)
+        Dim value As Object = Nothing
+        For Each row In values
+            Dim r = New List(Of Object) From {
+                    row.Key
+                }
+            For Each columName In columNames.Skip(1)
+                r.Add(If(row.Value.TryGetValue(columName, value), value, ""))
+            Next
+
+            table.AddRow(r.Cast(Of Object)().ToArray())
+        Next
+
+        Return table
+    End Function
+
+
 
 End Class
