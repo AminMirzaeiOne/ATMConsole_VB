@@ -318,5 +318,18 @@ Public Class ConsoleTableOptions
     Public Property OutputTo As TextWriter = Console.Out
 End Class
 
+Public Enum Format
+    Defaultd = 0
+    MarkDown = 1
+    Alternative = 2
+    Minimal = 3
+End Enum
+
+Public Enum Alignment
+    Left
+    Right
+End Enum
+
+
 
 
