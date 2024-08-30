@@ -35,7 +35,7 @@ Public Class ConsoleTable
     End Sub
 
     Public Sub New(options As ConsoleTableOptions)
-        options = If(options, CSharpImpl.__Throw(Of Object)(New ArgumentNullException("options")))
+        options = If(options, New ArgumentNullException("options"))
         Rows = New List(Of Object())()
         Columns = New List(Of Object)(options.Columns)
     End Sub
@@ -112,10 +112,7 @@ Public Class ConsoleTable
         Dim data As Byte() = Nothing
 
         For Each row As DataRow In dataTable.Rows
-            Dim items = row.ItemArray.[Select](Function(x)
-                                                   Dim data As Byte() = Nothing
-                                                   Return If(CSharpImpl.__Assign(data, TryCast(x, Byte())) IsNot Nothing, Convert.ToBase64String(data), x.ToString())
-                                               End Function).ToArray()
+            Dim items = row.ItemArray.Select(Function(x) If(TypeOf x Is Byte(), Convert.ToBase64String(DirectCast(x, Byte())), x.ToString())).ToArray()
             table.AddRow(items)
         Next
 
@@ -130,10 +127,16 @@ Public Class ConsoleTable
         Dim columnLengths = ColumnLengthsOp()
 
         ' set right alinment if is a number
-        Dim columnAlignment = Enumerable.Range(CInt(0), Columns.Count).[Select](GetNumberAlignment).ToList()
+        Dim columnAlignment = Enumerable.Range(0, Columns.Count) _
+    .Select(Function(i) GetNumberAlignment(i)) _
+    .ToList()
 
         ' create the string format with padding ; just use for maxRowLength
-        Dim format = Enumerable.Range(0, Columns.Count).[Select](Function(i) " | {" & i.ToString() & "," & columnAlignment(i).ToString() & columnLengths(i).ToString().ToString() & "}").Aggregate(Function(s, a) s + a).ToString() & " |"
+        Dim format = Enumerable.Range(0, Columns.Count) _
+    .Select(Function(i) " | {" & i & "," & columnAlignment(i) & columnLengths(i) & "}") _
+    .Aggregate(Function(s, a) s & a) & " |"
+
+
 
         SetFormats(ColumnLengthsOp(), columnAlignment)
 
@@ -172,14 +175,14 @@ Public Class ConsoleTable
         Dim allLines = New List(Of Object())()
         allLines.Add(Columns.ToArray())
         allLines.AddRange(Rows)
-        Formats = allLines.[Select](Function(d) Enumerable.Range(CInt(0), Columns.Count).[Select](Function(i)                                                                                       Return " | {" & i.ToString() & "," & columnAlignment(CInt(i)) & length.ToString().ToString() & "}"
+        Formats = allLines.[Select](Function(d) Enumerable.Range(CInt(0), Columns.Count).Select(Function(i)                                                                                       Return " | {" & i.ToString() & "," & columnAlignment(CInt(i)) & length.ToString().ToString() & "}"
                                                                                                   End Function).Aggregate(Function(s, a) s + a).ToString() & " |").ToList()
     End Sub
 
     Public Shared Function GetTextWidth(value As String) As Integer
         If Equals(value, Nothing) Then Return 0
 
-        Dim length = value.ToCharArray().Sum(Function(c) If(c > 127, 2, 1))
+        Dim length = value.ToCharArray().Sum(Function(c) If(Convert.ToInt32(c) > 127, 2, 1))
         Return length
     End Function
 
@@ -245,7 +248,9 @@ Public Class ConsoleTable
 
     Private Function Format(columnLengths As List(Of Integer), Optional delimiter As Char = "|"c) As String
         ' set right alignment if is a number
-        Dim columnAlignment = Enumerable.Range(CInt(0), Columns.Count).[Select](GetNumberAlignment).ToList()
+        Dim columnAlignment = Enumerable.Range(0, Columns.Count) _
+    .Select(AddressOf GetNumberAlignment) _
+    .ToList()
 
         SetFormats(columnLengths, columnAlignment)
 
@@ -259,13 +264,13 @@ Public Class ConsoleTable
     End Function
 
     Private Function ColumnLengthsOp() As List(Of Integer)
-        Dim lColumnLengths = Columns.[Select](Function(t, i) Rows.[Select](Function(x) x(i)).Union({Columns(i)}).Where(Function(x) x IsNot Nothing).[Select](Function(x) x.ToString().ToCharArray().Sum(Function(c) CInt(If(c > 127, 2, 1)))).Max()).ToList()
+        Dim lColumnLengths = Columns.Select(Function(t, i) Rows.[Select](Function(x) x(i)).Union({Columns(i)}).Where(Function(x) x IsNot Nothing).[Select](Function(x) x.ToString().ToCharArray().Sum(Function(c) CInt(If(c > 127, 2, 1)))).Max()).ToList()
         Return lColumnLengths
     End Function
 
 
     Public Sub Write(Optional format As Format = FormatOptions.Defaultd)
-        SetFormats(ColumnLengths(), Enumerable.Range(CInt(0), Columns.Count).[Select](GetNumberAlignment).ToList())
+        SetFormats(ColumnLengthsOp(), Enumerable.Range(CInt(0), Columns.Count).[Select](GetNumberAlignment).ToList())
 
         Select Case format
             Case FormatOptions.Defaultd
