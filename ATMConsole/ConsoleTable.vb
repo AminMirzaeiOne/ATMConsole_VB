@@ -264,13 +264,16 @@ Public Class ConsoleTable
     End Function
 
     Private Function ColumnLengthsOp() As List(Of Integer)
-        Dim lColumnLengths = Columns.Select(Function(t, i) Rows.[Select](Function(x) x(i)).Union({Columns(i)}).Where(Function(x) x IsNot Nothing).[Select](Function(x) x.ToString().ToCharArray().Sum(Function(c) CInt(If(c > 127, 2, 1)))).Max()).ToList()
-        Return lColumnLengths
+        Dim columnLengths = Columns.Select(Function(t, i) Rows.Select(Function(x) x(i)).
+        Union(New Integer() {Columns(i)}).
+        Where(Function(x) x IsNot Nothing).
+        Select(Function(x) x.ToString().ToCharArray().Sum(Function(c) If(c > 127, 2, 1))).Max()).ToList()
+        Return columnLengths
     End Function
 
 
     Public Sub Write(Optional format As Format = FormatOptions.Defaultd)
-        SetFormats(ColumnLengthsOp(), Enumerable.Range(CInt(0), Columns.Count).[Select](GetNumberAlignment).ToList())
+        SetFormats(ColumnLengthsOp(), Enumerable.Range(0, Columns.Count).Select(AddressOf GetNumberAlignment).ToList())
 
         Select Case format
             Case FormatOptions.Defaultd
