@@ -30,3 +30,6 @@ Bank ATM simulator program under the console project and using Visual Basic prog
 <h2>📷 Screenshots</h2>
 <img width="674" alt="Capture16" src="https://github.com/user-attachments/assets/60d526fb-2d8b-4a82-862c-b84dee0882f5">
 <img width="676" alt="Capture17" src="https://github.com/user-attachments/assets/e6797840-bd73-4fb2-949c-ad16a434b76e">
+
+<h2🔎 Tips </h2>
+In this program, the ConsoleTable class was written from the <b>(https://github.com/khalidabuhakmeh/ConsoleTables)</b> project and I rewrote it in Visual Basic language.
