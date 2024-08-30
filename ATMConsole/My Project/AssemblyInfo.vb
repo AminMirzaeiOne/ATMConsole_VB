@@ -9,11 +9,11 @@ Imports System.Runtime.InteropServices
 ' Review the values of the assembly attributes
 
 <Assembly: AssemblyTitle("ATMConsole")>
-<Assembly: AssemblyDescription("")>
-<Assembly: AssemblyCompany("")>
+<Assembly: AssemblyDescription("ATM simulation project in the application console environment in Visual Basic programming language")>
+<Assembly: AssemblyCompany("AminMirzaeiOne")>
 <Assembly: AssemblyProduct("ATMConsole")>
-<Assembly: AssemblyCopyright("Copyright ©  2024")>
-<Assembly: AssemblyTrademark("")>
+<Assembly: AssemblyCopyright("Copyright ©  2016")>
+<Assembly: AssemblyTrademark("AminMirzaeiOne")>
 
 <Assembly: ComVisible(False)>
 
