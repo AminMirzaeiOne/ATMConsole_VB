@@ -264,10 +264,12 @@ Public Class ConsoleTable
     End Function
 
     Private Function ColumnLengthsOp() As List(Of Integer)
-        Dim columnLengths = Columns.Select(Function(t, i) Rows.Select(Function(x) x(i)).
-        Union(New Integer() {Columns(i)}).
-        Where(Function(x) x IsNot Nothing).
-        Select(Function(x) x.ToString().ToCharArray().Sum(Function(c) If(c > 127, 2, 1))).Max()).ToList()
+        Dim columnLengths As List(Of Integer) = Columns _
+    .Select(Function(t, i) Rows.Select(Function(x) x(i)) _
+        .Union({Columns(i)}) _
+        .Where(Function(x) x IsNot Nothing) _
+        .Select(Function(x) x.ToString().ToCharArray().Sum(Function(c) If(AscW(c) > 127, 2, 1))).Max()) _
+    .ToList()
         Return columnLengths
     End Function
 
