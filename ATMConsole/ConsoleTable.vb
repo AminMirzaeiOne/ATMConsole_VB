@@ -102,5 +102,24 @@
         Return table
     End Function
 
+    Public Shared Function From(dataTable As DataTable) As ConsoleTable
+        Dim table = New ConsoleTable()
+
+        Dim columns = dataTable.Columns.Cast(Of DataColumn)().[Select](Function(x) x.ColumnName).ToList()
+
+        table.AddColumn(columns)
+        Dim data As Byte() = Nothing
+
+        For Each row As DataRow In dataTable.Rows
+            Dim items = row.ItemArray.[Select](Function(x)
+                                                   Dim data As Byte() = Nothing
+                                                   Return If(CSharpImpl.__Assign(data, TryCast(x, Byte())) IsNot Nothing, Convert.ToBase64String(data), x.ToString())
+                                               End Function).ToArray()
+            table.AddRow(items)
+        Next
+
+        Return table
+    End Function
+
 
 End Class
