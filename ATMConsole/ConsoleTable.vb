@@ -91,5 +91,16 @@
         .ColumnTypes = GetColumnsType(Of T)().ToArray()
     }
 
+        Dim columns = GetColumns(Of T)().ToList()
+
+        table.AddColumn(columns)
+
+        For Each propertyValues In values.[Select](Function(value) columns.[Select](Function(column) GetColumnValue(Of T)(value, column)))
+            table.AddRow(propertyValues.ToArray())
+        Next
+
+        Return table
+    End Function
+
 
 End Class
