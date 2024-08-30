@@ -220,6 +220,30 @@ Public Class ConsoleTable
         Return ToMarkDownString(Char.MinValue)
     End Function
 
+    Public Function ToStringAlternative() As String
+        Dim builder = New StringBuilder()
+
+        ' find the longest formatted line
+        Dim columnHeaders = String.Format(Formats(CInt(0)).TrimStart(), Columns.ToArray())
+
+        ' add each row
+        Dim results = Rows.[Select](Function(row, i) String.Format(Formats(i + 1).TrimStart(), row)).ToList()
+
+        ' create the divider
+        Dim divider = Regex.Replace(columnHeaders, "[^| ]", "-")
+        Dim dividerPlus = divider.Replace("|", "+")
+
+        builder.AppendLine(dividerPlus)
+        builder.AppendLine(columnHeaders)
+
+        For Each row In results
+            builder.AppendLine(dividerPlus)
+            builder.AppendLine(row)
+        Next
+        builder.AppendLine(dividerPlus)
+
+        Return builder.ToString()
+    End Function
 
 
 
