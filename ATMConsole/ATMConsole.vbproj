@@ -71,6 +71,7 @@
   <ItemGroup>
     <Compile Include="ATMScreen.vb" />
     <Compile Include="BankAccount.vb" />
+    <Compile Include="ConsoleTable.vb" />
     <Compile Include="IBalance.vb" />
     <Compile Include="IDeposit.vb" />
     <Compile Include="ILogin.vb" />

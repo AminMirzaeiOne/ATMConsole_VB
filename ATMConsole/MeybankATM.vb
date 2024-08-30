@@ -1,5 +1,5 @@
 ﻿Imports System.Security.Principal
-Imports ConsoleTables
+Imports console
 
 Public Class MeybankATM
     Implements ILogin, IBalance, IDeposit, IWithdrawal, IThirdPartyTransfer, ITransaction
