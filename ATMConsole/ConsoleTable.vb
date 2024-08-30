@@ -1,4 +1,6 @@
-﻿Public Class ConsoleTable
+﻿Imports System.Text
+
+Public Class ConsoleTable
     Public ReadOnly Property Columns As IList(Of Object)
     Public ReadOnly Property Rows As IList(Of Object())
 
@@ -120,6 +122,53 @@
 
         Return table
     End Function
+
+
+    Public Overrides Function ToString() As String
+        Dim builder = New StringBuilder()
+
+        ' find the longest column by searching each row
+        Dim columnLengths = columnLengths()
+
+        ' set right alinment if is a number
+        Dim columnAlignment = Enumerable.Range(CInt(0), Columns.Count).[Select](GetNumberAlignment).ToList()
+
+        ' create the string format with padding ; just use for maxRowLength
+        Dim format = Enumerable.Range(0, Columns.Count).[Select](Function(i) " | {" & i.ToString() & "," & columnAlignment(i).ToString() & columnLengths(i).ToString().ToString() & "}").Aggregate(Function(s, a) s + a).ToString() & " |"
+
+        SetFormats(columnLengths(), columnAlignment)
+
+        ' find the longest formatted line
+        Dim maxRowLength = Math.Max(0, If(Rows.Any(), Rows.Max(Function(row) String.Format(format, row).Length), 0))
+        Dim columnHeaders = String.Format(Formats(0), Columns.ToArray())
+
+        ' longest line is greater of formatted columnHeader and longest row
+        Dim longestLine = Math.Max(maxRowLength, columnHeaders.Length)
+
+        ' add each row
+        Dim results = Rows.[Select](Function(row, i) String.Format(Formats(i + 1), row)).ToList()
+
+        ' create the divider
+        Dim divider = " " & String.Join("", Enumerable.Repeat("-", longestLine - 1)).ToString() & " "
+
+        builder.AppendLine(divider)
+        builder.AppendLine(columnHeaders)
+
+        For Each row In results
+            builder.AppendLine(divider)
+            builder.AppendLine(row)
+        Next
+
+        builder.AppendLine(divider)
+
+        If Options.EnableCount Then
+            builder.AppendLine("")
+            builder.AppendFormat(" Count: {0}", Rows.Count)
+        End If
+
+        Return builder.ToString()
+    End Function
+
 
 
 End Class
