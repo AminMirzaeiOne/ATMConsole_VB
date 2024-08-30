@@ -86,5 +86,10 @@
     End Function
 
 
+    Public Shared Function From(Of T)(values As IEnumerable(Of T)) As ConsoleTable
+        Dim table = New ConsoleTable With {
+        .ColumnTypes = GetColumnsType(Of T)().ToArray()
+    }
+
 
 End Class
