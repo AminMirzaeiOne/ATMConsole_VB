@@ -284,5 +284,10 @@ Public Class ConsoleTable
         End Select
     End Sub
 
+    Private Shared Function GetColumns(Of T)() As IEnumerable(Of String)
+        Return GetType(T).GetProperties().[Select](Function(x) x.Name).ToArray()
+    End Function
+
+
 
 End Class
