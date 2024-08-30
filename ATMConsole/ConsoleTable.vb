@@ -267,5 +267,22 @@ Public Class ConsoleTable
     End Function
 
 
+    Public Sub Write(Optional format As Format = ConsoleTables.Format.Default)
+        SetFormats(ColumnLengths(), Enumerable.Range(CInt(0), Columns.Count).[Select](GetNumberAlignment).ToList())
+
+        Select Case format
+            Case ConsoleTables.Format.[Default]
+                Options.OutputTo.WriteLine(MyBase.ToString())
+            Case ConsoleTables.Format.MarkDown
+                Options.OutputTo.WriteLine(ToMarkDownString())
+            Case ConsoleTables.Format.Alternative
+                Options.OutputTo.WriteLine(ToStringAlternative())
+            Case ConsoleTables.Format.Minimal
+                Options.OutputTo.WriteLine(ToMinimalString())
+            Case Else
+                Throw New ArgumentOutOfRangeException(NameOf(format), format, Nothing)
+        End Select
+    End Sub
+
 
 End Class
