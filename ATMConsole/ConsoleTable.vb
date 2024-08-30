@@ -1,4 +1,5 @@
-﻿Imports System.Text
+﻿Imports System.IO
+Imports System.Text
 Imports System.Text.RegularExpressions
 Imports Microsoft.SqlServer.Server
 
@@ -33,7 +34,7 @@ Public Class ConsoleTable
 
     Public Sub New(ParamArray columns As String())
         Me.New(New ConsoleTableOptions With {
-                .columns = New List(Of String)(columns)
+                .Columns = New List(Of String)(columns)
             })
     End Sub
 
@@ -298,4 +299,24 @@ Public Class ConsoleTable
 
 
 
+
+
 End Class
+
+Public Class ConsoleTableOptions
+    Public Property Columns As IEnumerable(Of String) = New List(Of String)()
+    Public Property EnableCount As Boolean = True
+
+    ''' <summary>
+    ''' Enable only from a list of objects
+    ''' </summary>
+    Public Property NumberAlignment As Alignment = Alignment.Left
+
+    ''' <summary>
+    ''' The <seecref="TextWriter"/> to write to. Defaults to <seecref="Console.Out"/>.
+    ''' </summary>
+    Public Property OutputTo As TextWriter = Console.Out
+End Class
+
+
+
