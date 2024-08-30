@@ -163,7 +163,7 @@ Public Class MeybankATM
             Utility.PrintMessage($"Withdrawal failed. Your account needs to have minimum {Utility.FormatAmount(minimum_kept_amt)}", False)
         Else
             ' Check if receiver's bank account number is valid.
-            Dim selectedBankAccountReceiver = (From b In _accountList Where b.AccountNumber Is vmThirdPartyTransfer.RecipientBankAccountNumber Select b).FirstOrDefault()
+            Dim selectedBankAccountReceiver = (From b In _accountList Where b.AccountNumber = vmThirdPartyTransfer.RecipientBankAccountNumber Select b).FirstOrDefault()
 
             If selectedBankAccountReceiver Is Nothing Then
                 Utility.PrintMessage($"Third party transfer failed. Receiver bank account number is invalid.", False)
