@@ -28,8 +28,9 @@ Bank ATM simulator program under the console project and using Visual Basic prog
 6 - View the result
 
 <h2>📷 Screenshots</h2>
-<img width="674" alt="Capture16" src="https://github.com/user-attachments/assets/60d526fb-2d8b-4a82-862c-b84dee0882f5">
-<img width="676" alt="Capture17" src="https://github.com/user-attachments/assets/e6797840-bd73-4fb2-949c-ad16a434b76e">
+![Screenshot 2024-08-30 132800](https://github.com/user-attachments/assets/83069e5c-527e-4f86-a690-09cfd9684a54)
+![Screenshot 2024-08-30 133241](https://github.com/user-attachments/assets/3c225945-34ee-4f52-906e-8215890be133)
+![Screenshot 2024-08-30 133340](https://github.com/user-attachments/assets/8865dedb-cf69-41e9-ac33-009ef35bfe40)
 
 <h2🔎 Tips </h2>
 In this program, the ConsoleTable class was written from the <b>(https://github.com/khalidabuhakmeh/ConsoleTables)</b> project and I rewrote it in Visual Basic language.
